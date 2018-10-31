@@ -14,8 +14,8 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fm;
     FragmentTransaction tran;
     CalendarFragment frag1;
-    WeeklyFragment frag2;
-    DailyFragment frag3;
+    NewWeeklyFragment frag2;
+    NewDailyragment frag3;
     static DBManager dbManager;
 
     @Override
@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         frag1 = new CalendarFragment(); //프래그먼트 객채셍성
-        frag2 = new WeeklyFragment(); //프래그먼트 객채셍성
-        frag3 = new DailyFragment(); //프래그먼트 객채셍성
+        frag2 = new NewWeeklyFragment(); //프래그먼트 객채셍성
+        frag3 = new NewDailyragment(); //프래그먼트 객채셍성
         setFrag(0); //프래그먼트 교체
 
 

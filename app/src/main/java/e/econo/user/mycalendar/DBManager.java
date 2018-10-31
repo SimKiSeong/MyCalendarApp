@@ -23,7 +23,7 @@ public class DBManager extends SQLiteOpenHelper {
         // create table 태이블 명(컬럼명 타입 옵션);
         // STUDY_LIST라는 테이블은 자동 값 증가하는 id컬럼, title이라는 택스트, content이라는 택스트, 날짜
 
-        db.execSQL("CREATE TABLE TODO_LIST(_id INTEGER PRIMARY KEY AUTOINCREMENT, month TEXT, week TEXT, date TEXT, todo TEXT)");
+        db.execSQL("CREATE TABLE TODO_LIST(_id INTEGER PRIMARY KEY AUTOINCREMENT,year TEXT, month TEXT, week TEXT, date TEXT, todo TEXT)");
 
     }
 
@@ -150,7 +150,6 @@ public class DBManager extends SQLiteOpenHelper {
     public Cursor todoNotice(){
         SQLiteDatabase db = getReadableDatabase();
         String str = "";
-
 
         Cursor cursor = db.rawQuery("select * from TODO_LIST", null);
 

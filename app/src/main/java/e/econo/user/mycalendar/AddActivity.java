@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -19,7 +20,7 @@ import java.util.GregorianCalendar;
 public class AddActivity extends AppCompatActivity {
 
     static DBManager dbManager;
-    int mYear, mMonth, mDay, mHour, mMinute;
+    int mYear, mMonth, mDay, mHour, mMinute, mWeek;
     EditText etTodo;
     EditText etDate;
 
@@ -38,6 +39,7 @@ public class AddActivity extends AppCompatActivity {
         mDay = cal.get(Calendar.DAY_OF_MONTH);
         mHour = cal.get(Calendar.HOUR_OF_DAY);
         mMinute = cal.get(Calendar.MINUTE);
+        mWeek = cal.get(Calendar.WEEK_OF_MONTH);
 
         // 데이트 피커
         etDate = (EditText) findViewById(R.id.et_date);
@@ -63,6 +65,7 @@ public class AddActivity extends AppCompatActivity {
 
 
 
+
         // 디비에 넣기
         Button btnInsert = (Button) findViewById(R.id.btn_insert);
         btnInsert.setOnClickListener(new View.OnClickListener() {
@@ -70,54 +73,28 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // insert into 테이블명 values (값, 값, 값...);
+                Calendar newcal = new GregorianCalendar(mYear,mMonth,mDay);
+
+                mWeek = newcal.get(Calendar.WEEK_OF_MONTH);
 
                 String year = String.valueOf(mYear);
                 String month = String.valueOf(mMonth);
-                String week = "1";
+                String week = String.valueOf(mWeek);
                 String date = String.valueOf(mDay);
                 String todo = etTodo.getText().toString();
 
 
-
-
                 if (!todo.equals("") && todo.length() > 0) {
-
-
-                    dbManager.insert("insert into TODO_LIST values(null, '" + month + "','" + week + "','" + date + "','" +  todo + "');");
+                    dbManager.insert("insert into TODO_LIST values(null, '"+year + "','" + month + "','" + week + "','" + date + "','" +  todo + "');");
                     Toast.makeText(getApplicationContext(), "성공적으로 추가되었습니다", Toast.LENGTH_SHORT).show();
-
                     Intent newintent = new Intent(AddActivity.this, MainActivity.class);
                     AddActivity.this.startActivity(newintent);
                     AddActivity.this.onStop();
 
-                    /*
-                    Cursor cursor;
-                    cursor = dbManager.todoNotice();
-
-                    while (cursor.moveToNext()) {
-                        int k_num;
-                        String k_number;
-                        String k_name;
-                        String k_address;
-                        String k_birth;
-                        String k_time = "12";
-
-                        k_num = cursor.getInt(0);
-                        k_number = cursor.getString(1);
-                        k_name = cursor.getString(2);
-                        k_address = cursor.getString(3);
-                        k_birth = cursor.getString(4);
-
-
-                    }
-
-*/
 
                 } else
 
                     Toast.makeText(getApplicationContext(), "입력정보를 다시확인해주세요", Toast.LENGTH_SHORT).show();//Display toast if edittext is empty
-
-
 
 
 
