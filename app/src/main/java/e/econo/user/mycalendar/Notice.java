@@ -6,6 +6,9 @@ package e.econo.user.mycalendar;
 
 public class Notice {
 
+
+
+    String number;
     String year;
     String month;
     String week;
@@ -13,7 +16,8 @@ public class Notice {
     String todo;
 
 
-    public Notice(String year,String month, String week, String date, String todo) {
+    public Notice(String number, String year,String month, String week, String date, String todo) {
+        this.number = number;
         this.year = year;
         this.month = month;
         this.week = week;
@@ -22,6 +26,14 @@ public class Notice {
     }
 
 
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
     public String getYear() {
         return year;
