@@ -282,8 +282,8 @@ public class CalendarFragment extends Fragment {
 
         @Override
         public void decorate(DayViewFacade view) {
-            view.setSelectionDrawable(drawable);
-           // view.addSpan(new DotSpan(5, color)); // 날자밑에 점
+            //view.setSelectionDrawable(drawable);
+           view.addSpan(new DotSpan(8, color)); // 날자밑에 점
         }
     }
 

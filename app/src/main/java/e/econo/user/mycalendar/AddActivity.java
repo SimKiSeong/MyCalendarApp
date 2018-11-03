@@ -4,6 +4,9 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +16,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -24,6 +28,7 @@ public class AddActivity extends AppCompatActivity {
     EditText etTodo;
     EditText etDate;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +45,7 @@ public class AddActivity extends AppCompatActivity {
         mHour = cal.get(Calendar.HOUR_OF_DAY);
         mMinute = cal.get(Calendar.MINUTE);
         mWeek = cal.get(Calendar.WEEK_OF_YEAR);
+
 
         // 데이트 피커
         etDate = (EditText) findViewById(R.id.et_date);
@@ -101,6 +107,20 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+
+        //돌아가기 버튼
+        Button btnback = (Button) findViewById(R.id.btn_back);
+        btnback.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+               //Intent newintent = new Intent(AddActivity.this, MainActivity.class);
+                //AddActivity.this.startActivity(newintent);
+                AddActivity.this.finish();
+
+            }
+        });
 
 
 

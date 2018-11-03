@@ -111,19 +111,14 @@ public class NewWeeklyFragment extends Fragment {
         fYear = fcal.get(Calendar.YEAR);
         fMonth = fcal.get(Calendar.MONTH);
         fDay = fcal.get(Calendar.DAY_OF_MONTH);
-        fWeek = fcal.get(Calendar.WEEK_OF_YEAR);
+        fWeek = fcal.get(Calendar.WEEK_OF_MONTH);
 
         lYear = lcal.get(Calendar.YEAR);
         lMonth = lcal.get(Calendar.MONTH);
         lDay = lcal.get(Calendar.DAY_OF_MONTH);
 
-        dateText = (TextView)getView().findViewById(R.id.textDate);
-        dateText.setText(String.valueOf(fYear)+"년 "+String.valueOf(fWeek)+"째주");
-
-        weekText = (TextView)getView().findViewById(R.id.textWeek);
-        weekText.setText(String.valueOf(fMonth+1)+". "+String.valueOf(fDay)+" ~ "+String.valueOf(lMonth+1)+". "+String.valueOf(lDay));
-
         makenotice();
+        maketext();
 
 
 
@@ -147,24 +142,17 @@ public class NewWeeklyFragment extends Fragment {
                 Calendar lcal = new GregorianCalendar(mYear,mMonth,mDay);
                 lcal.add(Calendar.DATE,(7-cal.get(Calendar.DAY_OF_WEEK)));
 
-
                 fYear = fcal.get(Calendar.YEAR);
                 fMonth = fcal.get(Calendar.MONTH);
                 fDay = fcal.get(Calendar.DAY_OF_MONTH);
-                fWeek = fcal.get(Calendar.WEEK_OF_YEAR);
+                fWeek = fcal.get(Calendar.WEEK_OF_MONTH);
 
                 lYear = lcal.get(Calendar.YEAR);
                 lMonth = lcal.get(Calendar.MONTH);
                 lDay = lcal.get(Calendar.DAY_OF_MONTH);
 
-                dateText = (TextView)getView().findViewById(R.id.textDate);
-                dateText.setText(String.valueOf(fYear)+"년 "+String.valueOf(fWeek)+"째주");
-
-                weekText = (TextView)getView().findViewById(R.id.textWeek);
-                weekText.setText(String.valueOf(fMonth+1)+". "+String.valueOf(fDay)+" ~ "+String.valueOf(lMonth+1)+". "+String.valueOf(lDay));
-
                 makenotice();
-
+                maketext();
 
             }
         });
@@ -183,30 +171,24 @@ public class NewWeeklyFragment extends Fragment {
                 mWeek = newCal.week;
                 mDay = newCal.date;
 
-
                 Calendar fcal = new GregorianCalendar(mYear,mMonth,mDay);
                 fcal.add(Calendar.DATE,-(cal.get(Calendar.DAY_OF_WEEK)-1));
 
                 Calendar lcal = new GregorianCalendar(mYear,mMonth,mDay);
                 lcal.add(Calendar.DATE,(7-cal.get(Calendar.DAY_OF_WEEK)));
 
-
                 fYear = fcal.get(Calendar.YEAR);
                 fMonth = fcal.get(Calendar.MONTH);
                 fDay = fcal.get(Calendar.DAY_OF_MONTH);
-                fWeek = fcal.get(Calendar.WEEK_OF_YEAR);
+                fWeek = fcal.get(Calendar.WEEK_OF_MONTH);
 
                 lYear = lcal.get(Calendar.YEAR);
                 lMonth = lcal.get(Calendar.MONTH);
                 lDay = lcal.get(Calendar.DAY_OF_MONTH);
 
-                dateText = (TextView)getView().findViewById(R.id.textDate);
-                dateText.setText(String.valueOf(fYear)+"년 "+String.valueOf(fWeek)+"째주");
-
-                weekText = (TextView)getView().findViewById(R.id.textWeek);
-                weekText.setText(String.valueOf(fMonth+1)+". "+String.valueOf(fDay)+" ~ "+String.valueOf(lMonth+1)+". "+String.valueOf(lDay));
-
                 makenotice();
+
+                maketext();
 
             }
         });
@@ -214,6 +196,25 @@ public class NewWeeklyFragment extends Fragment {
 
 
     }
+
+    public void maketext() {
+
+        Calendar cal = new GregorianCalendar();
+        CustomCalendar newCal = new CustomCalendar(mYear,mMonth,mWeek,mDay);
+
+        Calendar checkCal = new GregorianCalendar(fYear,fMonth,1);
+        if(checkCal.get(Calendar.DAY_OF_WEEK)!=1){
+                        fWeek = fWeek - 1;
+        }
+
+        dateText = (TextView)getView().findViewById(R.id.textDate);
+        dateText.setText(String.valueOf(fMonth+1)+"월 "+String.valueOf(fWeek)+"째주");
+
+        weekText = (TextView)getView().findViewById(R.id.textWeek);
+        weekText.setText(String.valueOf(fMonth+1)+". "+String.valueOf(fDay)+" ~ "+String.valueOf(lMonth+1)+". "+String.valueOf(lDay));
+
+    }
+
 
     public void makenotice() {
 
