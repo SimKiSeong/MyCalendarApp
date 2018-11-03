@@ -1,5 +1,7 @@
 package e.econo.user.mycalendar;
 
+import android.util.Log;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -13,12 +15,15 @@ public class CustomCalendar {
     int month;
     int date;
     int week;
+    int first;
+
 
     CustomCalendar(int year, int month, int week ,int date){
         this.year = year;
         this.month = month;
         this.date = date;
         this.week = week;
+        Calendar cal = new GregorianCalendar(year,month,date);
     }
 
     void nextday(){
@@ -92,20 +97,23 @@ public class CustomCalendar {
     }
 
     void nextWeek(){
-        for(int i = 0; i<7;i++){
-            nextday();
-        }
+
         Calendar cal = new GregorianCalendar(year,month,date);
-        week = cal.get(Calendar.WEEK_OF_MONTH);
+        cal.add(Calendar.WEEK_OF_YEAR,1);
+        year = cal.get(Calendar.YEAR);
+        month = cal.get(Calendar.MONTH);
+        week = cal.get(Calendar.WEEK_OF_YEAR);
+        date = cal.get(Calendar.DATE);
     }
 
     void lastWeek(){
-        for(int i = 0; i<7;i++){
-            lastday();
-        }
-        Calendar cal = new GregorianCalendar(year,month,date);
-        week = cal.get(Calendar.WEEK_OF_MONTH);
 
+        Calendar cal = new GregorianCalendar(year,month,date);
+        cal.add(Calendar.WEEK_OF_YEAR,-1);
+        year = cal.get(Calendar.YEAR);
+        month = cal.get(Calendar.MONTH);
+        week = cal.get(Calendar.WEEK_OF_YEAR);
+        date = cal.get(Calendar.DATE);
     }
 
 

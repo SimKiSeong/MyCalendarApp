@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,7 +83,7 @@ public class NewDailyragment extends Fragment {
     private ImageButton rightButton;
     private ImageButton leftButton;
     private TextView dateText;
-
+    private ImageView noDate;
     //날자 관련
     static DBManager dbManager = MainActivity.dbManager;
     int mYear, mMonth, mDay, mHour, mMinute, mWeek;
@@ -99,8 +100,9 @@ public class NewDailyragment extends Fragment {
         mDay = cal.get(Calendar.DAY_OF_MONTH);
         mHour = cal.get(Calendar.HOUR_OF_DAY);
         mMinute = cal.get(Calendar.MINUTE);
-        mWeek = cal.get(Calendar.WEEK_OF_MONTH);
+        mWeek = cal.get(Calendar.WEEK_OF_YEAR);
 
+        noDate = (ImageView)getView().findViewById(R.id.nodate);
 
         makenotice();
 
@@ -160,7 +162,7 @@ public class NewDailyragment extends Fragment {
 
         Cursor cursor;
         cursor = dbManager.todoNotice();
-        boolean nodate = true;
+        boolean find = true;
 
         noticeList = new ArrayList<>();
         while (cursor.moveToNext()) {
@@ -182,7 +184,7 @@ public class NewDailyragment extends Fragment {
 
             // 년 달 일 같으면 입력
             if (newYear.equals(String.valueOf(mYear)) && newDate.equals(String.valueOf(mDay)) && newMonth.equals(String.valueOf(mMonth))) {
-                nodate = false;
+                find = false;
                 noticeList.add(new Notice(first, newYear,  String.valueOf(mMonth+1), newWeek, newDate, newTodo));
             }
 
@@ -191,6 +193,14 @@ public class NewDailyragment extends Fragment {
             noticeListView.setAdapter(adapter);
 
         }
+
+        if(find){
+            noDate.setVisibility(View.VISIBLE);
+        }else{
+            noDate.setVisibility(View.GONE);
+        }
+
+
     }
 
 

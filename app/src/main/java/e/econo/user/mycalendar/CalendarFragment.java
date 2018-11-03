@@ -1,12 +1,34 @@
 package e.econo.user.mycalendar;
 
+import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
+
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.spans.DotSpan;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
 
 
 /**
@@ -67,6 +89,40 @@ public class CalendarFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_calendar, container, false);
     }
 
+    //날자 관련
+    static DBManager dbManager = MainActivity.dbManager;
+    int mYear, mMonth, mDay, mHour, mMinute, mWeek;
+    private CalendarView calendar;
+    private ArrayList<CalendarDay> dates = new ArrayList<CalendarDay>();
+
+    MaterialCalendarView materialCalendarView;
+
+    public void onActivityCreated(Bundle b) {
+        super.onActivityCreated(b);
+
+        //달력 값
+        Calendar cal = new GregorianCalendar();
+        mYear = cal.get(Calendar.YEAR);
+        mMonth = cal.get(Calendar.MONTH);
+        mDay = cal.get(Calendar.DAY_OF_MONTH);
+        mHour = cal.get(Calendar.HOUR_OF_DAY);
+        mMinute = cal.get(Calendar.MINUTE);
+        mWeek = cal.get(Calendar.WEEK_OF_YEAR);
+
+        materialCalendarView = (MaterialCalendarView) getView().findViewById(R.id.calendarView);
+        materialCalendarView.addDecorators(
+                new SundayDecorator(),
+                new SaturdayDecorator(),
+               new OneDayDecorator());
+
+        makenotice();
+
+
+        materialCalendarView.addDecorator(new EventDecorator(0xffff00ff, dates, getActivity()));
+
+
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -106,4 +162,131 @@ public class CalendarFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void makenotice() {
+
+        Cursor cursor;
+        cursor = dbManager.todoNotice();
+        while (cursor.moveToNext()) {
+            int num;
+            String first;
+            String newYear;
+            String newMonth;
+            String newWeek;
+            String newDate;
+            String newTodo;
+
+            first = cursor.getString(0);
+            newYear = cursor.getString(1);
+            newMonth = cursor.getString(2);
+            newWeek = cursor.getString(3);
+            newDate = cursor.getString(4);
+            newTodo = cursor.getString(5);
+
+            // 년 달 월 같으면 입력
+            Calendar cal = Calendar.getInstance();
+            cal.set(Integer.valueOf(newYear),Integer.valueOf(newMonth),Integer.valueOf(newDate));
+            CalendarDay day = CalendarDay.from(cal);
+            dates.add(day);
+
+        }
+    }
+
+    // 달력 꾸미는데 필요한 클래스들
+
+    public class SundayDecorator implements DayViewDecorator {
+
+        private final Calendar calendar = Calendar.getInstance();
+
+        public SundayDecorator() {
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            day.copyTo(calendar);
+            int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+            return weekDay == Calendar.SUNDAY;
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.addSpan(new ForegroundColorSpan(Color.RED));
+        }
+    }
+
+
+    public class SaturdayDecorator implements DayViewDecorator {
+
+        private final Calendar calendar = Calendar.getInstance();
+
+        public SaturdayDecorator() {
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            day.copyTo(calendar);
+            int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+            return weekDay == Calendar.SATURDAY;
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.addSpan(new ForegroundColorSpan(Color.BLUE));
+        }
+    }
+
+    public class OneDayDecorator implements DayViewDecorator {
+
+        private CalendarDay date;
+
+        public OneDayDecorator() {
+            date = CalendarDay.today();
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            return date != null && day.equals(date);
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.addSpan(new StyleSpan(Typeface.BOLD));
+            view.addSpan(new RelativeSizeSpan(1.4f));
+            view.addSpan(new ForegroundColorSpan(Color.GREEN));
+        }
+
+        /**
+         * We're changing the internals, so make sure to call {@linkplain MaterialCalendarView#invalidateDecorators()}
+         */
+        public void setDate(Date date) {
+            this.date = CalendarDay.from(date);
+        }
+    }
+
+    public class EventDecorator implements DayViewDecorator {
+
+        private final Drawable drawable;
+        private int color;
+        private HashSet<CalendarDay> dates;
+
+        public EventDecorator(int color, Collection<CalendarDay> dates, Activity context) {
+            drawable = context.getResources().getDrawable(R.drawable.more);
+            this.color = color;
+            this.dates = new HashSet<>(dates);
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            return dates.contains(day);
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.setSelectionDrawable(drawable);
+           // view.addSpan(new DotSpan(5, color)); // 날자밑에 점
+        }
+    }
+
+
+
 }

@@ -39,7 +39,7 @@ public class AddActivity extends AppCompatActivity {
         mDay = cal.get(Calendar.DAY_OF_MONTH);
         mHour = cal.get(Calendar.HOUR_OF_DAY);
         mMinute = cal.get(Calendar.MINUTE);
-        mWeek = cal.get(Calendar.WEEK_OF_MONTH);
+        mWeek = cal.get(Calendar.WEEK_OF_YEAR);
 
         // 데이트 피커
         etDate = (EditText) findViewById(R.id.et_date);
@@ -75,7 +75,7 @@ public class AddActivity extends AppCompatActivity {
                 // insert into 테이블명 values (값, 값, 값...);
                 Calendar newcal = new GregorianCalendar(mYear,mMonth,mDay);
 
-                mWeek = newcal.get(Calendar.WEEK_OF_MONTH);
+                mWeek = newcal.get(Calendar.WEEK_OF_YEAR);
 
                 String year = String.valueOf(mYear);
                 String month = String.valueOf(mMonth);
