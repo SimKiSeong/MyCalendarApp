@@ -100,7 +100,7 @@ public class AddActivity extends AppCompatActivity {
 
                 } else
 
-                    Toast.makeText(getApplicationContext(), "입력정보를 다시확인해주세요", Toast.LENGTH_SHORT).show();//Display toast if edittext is empty
+                    Toast.makeText(getApplicationContext(), "할일을 입력해 주세요.", Toast.LENGTH_SHORT).show();//Display toast if edittext is empty
 
 
 

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -191,6 +192,32 @@ public class NewDailyragment extends Fragment {
             noticeListView = (ListView) getView().findViewById(R.id.noticeListView);
             adapter = new NoticeListAdapter(getContext().getApplicationContext(), noticeList);
             noticeListView.setAdapter(adapter);
+
+            noticeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    String intentName = noticeList.get(position).number;
+                    String intentYear = noticeList.get(position).year;
+                    String intentMonth = noticeList.get(position).month;
+                    String intentDate = noticeList.get(position).date;
+                    String intentTodo = noticeList.get(position).todo;
+
+
+                    Intent newIntent = new Intent(getActivity(), DeleteActivity.class);
+                    newIntent.putExtra("name",intentName);
+                    newIntent.putExtra("year",intentYear);
+                    newIntent.putExtra("month",intentMonth);
+                    newIntent.putExtra("date",intentDate);
+                    newIntent.putExtra("todo",intentTodo);
+
+
+                    getActivity().startActivity(newIntent);
+
+                }
+            });
+
+
 
         }
 
